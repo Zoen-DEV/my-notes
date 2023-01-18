@@ -37,18 +37,18 @@ export default function Home() {
 
   const handleSubmit = (e) => {};
 
-  const openNote = (e) => {
-    fetch(`http://localhost:5000/notes/${e.target.id}`)
+  const openNote = (e, id) => {
+    console.log(id);
+    fetch(`http://localhost:5000/notes/${id}`)
       .then((res) => res.json())
-      .then((res) =>
+      .then((res) => {
+        console.log(res);
         setFormData({
           title: res.title,
           info: res.info,
-        })
-      );
+        });
+      });
   };
-
-  console.log(notes)
 
   return (
     <article className="flex justify-between h-screen px-2 py-5">
@@ -58,8 +58,7 @@ export default function Home() {
           {notes?.map(({ id, title, date }) => (
             <li
               key={id}
-              id={id}
-              onClick={openNote}
+              onClick={(e) => openNote(e, id)}
               className="self-start w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-md px-2 cursor-pointer hover:from-violet-600 hover:to-fuchsia-600 shadow-md"
             >
               <h3 className="text-xl">
@@ -89,7 +88,7 @@ export default function Home() {
           placeholder="Note info"
           value={formData.info}
           onChange={handleNote}
-          className="bg-transparent text-gray-50 border-b-2 border-gray-600 focus:border-fuchsia-600 outline-none resize-none bg-gray-800 px-2"
+          className="bg-transparent text-gray-50 border-b-2 border-gray-600 focus:border-fuchsia-600 outline-none resize-none bg-gray-800 px-2 w-full"
         ></textarea>
         <button
           onClick={handleSubmit}
